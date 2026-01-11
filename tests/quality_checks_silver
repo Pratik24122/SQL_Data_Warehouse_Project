@@ -1,0 +1,410 @@
+/*
+===========================================================================================
+Script Name      : quality_checks_silver.sql
+Layer            : Silver
+Purpose          : Data Quality Validation for Silver Layer
+===========================================================================================
+
+Script Purpose:
+    This script performs comprehensive data quality checks to validate the correctness,
+    consistency, and standardization of data loaded into the Silver layer. It compares
+    data conditions between the Bronze and Silver layers to ensure that transformation
+    logic has been applied correctly.
+
+Quality Checks Covered:
+    - Duplicate record detection (primary keys and business keys).
+    - Null value validation for critical columns.
+    - Whitespace detection in character columns.
+    - Data standardization verification (gender, marital status, country, product line).
+    - Numeric validations (negative or invalid values).
+    - Date validations (invalid formats, future dates, incorrect date order).
+    - Referential integrity checks between related Silver tables.
+    - Business rule validations (sales = quantity × price).
+
+Entities Validated:
+    - crm_cust_info
+    - crm_prd_info
+    - crm_sales_details
+    - erp_cust_az12
+    - erp_loc_a101
+    - erp_px_cat_g1v2
+
+Layers Involved:
+    - Bronze Layer  : Source data validation and anomaly detection.
+    - Silver Layer  : Post-transformation validation to confirm data cleansing
+                      and standardization.
+
+Actions Performed:
+    - Executes SELECT-based validation queries only.
+    - Does NOT modify, insert, update, or delete any data.
+    - Highlights records that violate data quality rules.
+
+Parameters:
+    None.
+
+Returns:
+    Result sets identifying data quality issues (if any).
+
+Usage Notes:
+    - This script should be executed after Silver layer data loading is complete.
+    - Intended for data validation, debugging, and audit purposes.
+    - Can be integrated into CI/CD or orchestration workflows as a quality gate.
+    - Any returned rows indicate data quality failures that require investigation.
+
+===========================================================================================
+*/
+
+
+-- ============================================================================
+-- crm_cust_info
+-- ============================================================================
+
+-- ============
+-- Bronze Layer
+-- ============
+-- Checking for the duplicates 
+select cst_id, count(*)
+from bronze.crm_cust_info
+group by cst_id
+having count(*)>1 or cst_id is null;
+
+select cst_key, count(*)
+from bronze.crm_cust_info
+group by cst_key
+having count(*)>1 or cst_key is null;
+
+
+-- Checking white spaces in the Character Columns
+select cst_marital_status
+from bronze.crm_cust_info
+where cst_marital_status!=trim(cst_marital_status);
+
+
+-- Data Standardization
+Select distinct(cst_marital_status)
+from bronze.crm_cust_info;
+
+Select distinct(cst_gndr)
+from bronze.crm_cust_info;
+
+Select distinct(cst_marital_status)
+from bronze.crm_cust_info;
+
+select * from bronze.crm_cust_info limit 1000;
+
+-- ============
+-- Silver Layer
+-- ============
+
+-- Checking for the duplicates 
+select cst_id, count(*)
+from silver.crm_cust_info
+group by cst_id
+having count(*)>1 or cst_id is null;
+
+select cst_key, count(*)
+from silver.crm_cust_info
+group by cst_key
+having count(*)>1 or cst_key is null;
+
+
+-- Checking white spaces in the Character Columns
+select cst_marital_status
+from silver.crm_cust_info
+where cst_marital_status!=trim(cst_marital_status);
+
+
+-- Data Standardization
+Select distinct(cst_marital_status)
+from silver.crm_cust_info;
+
+Select distinct(cst_gndr)
+from silver.crm_cust_info;
+
+Select distinct(cst_marital_status)
+from bronze.crm_cust_info;
+
+
+select * from silver.crm_cust_info;
+-- ===========================================================================================
+
+
+
+
+-- ============================================================================
+-- crm_prd_info
+-- ===========================================================================
+-- Bronze Layer
+-- ============
+-- Checking for the duplicates 
+select prd_id, count(*)
+from bronze.crm_prd_info
+group by prd_id
+having count(*)>1 or prd_id is null;
+
+select prd_key, count(*)
+from bronze.crm_prd_info
+group by prd_key
+having count(*)>1 or prd_key is null;
+
+select prd_nm, count(*)
+from bronze.crm_prd_info
+group by prd_nm
+having count(*)>1 or prd_nm is null;
+
+-- Checking white spaces in the Character Columns
+select prd_nm
+from bronze.crm_prd_info
+where prd_nm!=trim(prd_nm);
+
+
+-- Checking for null values and negative numbers
+select prd_cost
+from bronze.crm_prd_info
+where prd_cost is null or prd_cost<0;
+
+-- Strandadize and Normalize the prd_line
+select distinct(prd_line)
+from bronze.crm_prd_info;
+
+-- Check for Invalid Date Orders
+SELECT *
+FROM bronze.crm_prd_info
+WHERE prd_start_dt>prd_end_dt;
+
+
+select * from bronze.crm_prd_info;
+
+-- ============================================================================
+-- Silver Layer 
+-- ============
+
+-- Checking for the duplicates 
+select prd_id, count(*)
+from silver.crm_prd_info
+group by prd_id
+having count(*)>1 or prd_id is null;
+
+select prd_key, count(*)
+from silver.crm_prd_info
+group by prd_key
+having count(*)>1 or prd_key is null;
+
+select prd_nm, count(*)
+from silver.crm_prd_info
+group by prd_nm
+having count(*)>1 or prd_nm is null;
+
+-- Checking white spaces in the Character Columns
+select prd_nm
+from silver.crm_prd_info
+where prd_nm!=trim(prd_nm);
+
+
+-- Checking for null values and negative numbers
+select prd_cost
+from silver.crm_prd_info
+where prd_cost is null or prd_cost<0;
+
+-- Strandadize and Normalize the prd_line
+select distinct(prd_line)
+from silver.crm_prd_info;
+
+-- Check for Invalid Date Orders
+SELECT *
+FROM silver.crm_prd_info
+WHERE prd_start_dt>prd_end_dt;
+
+SELECT * FROM silver.crm_prd_info;
+-- ===========================================================================================
+
+
+
+
+-- ============================================================================
+-- crm_sales_details
+-- ============================================================================
+-- Bronze Layer
+-- ============
+-- Checking invalid dates
+select * from bronze.crm_sales_details 
+where sls_order_dt<=0 or sls_order_dt>=20250105  or length(cast(sls_order_dt as varchar) )!=8;
+
+select * from bronze.crm_sales_details 
+where  sls_ship_dt<=0 or sls_ship_dt>=20250105 or length(cast(sls_ship_dt as varchar) )!=8;
+
+select * from bronze.crm_sales_details 
+where sls_due_dt<=0 or sls_due_dt>=20250105 or length(cast(sls_due_dt as varchar) )!=8;
+
+-- Checking invalid order of dates
+select * from bronze.crm_sales_details
+where sls_order_dt>sls_ship_dt or sls_order_dt>sls_due_dt
+
+-- Checking for invalid sales
+select * from bronze.crm_sales_details
+where sls_sales<=0 or sls_sales is null or sls_sales!=sls_quantity*sls_price;
+
+select * from bronze.crm_sales_details
+where sls_quantity<=0 or sls_quantity is null or sls_quantity!=sls_sales/sls_price;
+
+select * from bronze.crm_sales_details
+where sls_price<=0 or sls_price is null or sls_price!=sls_sales/sls_quantity;
+
+
+select * from bronze.crm_sales_details;
+
+-- ============================================================================
+-- Silver Layer
+-- ============
+
+select * from silver.crm_sales_details 
+where sls_order_dt<=0 or sls_order_dt>=20250105  or length(cast(sls_order_dt as varchar) )!=8;
+
+select * from silver.crm_sales_details 
+where  sls_ship_dt<=0 or sls_ship_dt>=20250105 or length(cast(sls_ship_dt as varchar) )!=8;
+
+select * from silver.crm_sales_details 
+where sls_due_dt<=0 or sls_due_dt>=20250105 or length(cast(sls_due_dt as varchar) )!=8;
+
+-- Checking invalid order of dates
+select * from silver.crm_sales_details
+where sls_order_dt>sls_ship_dt or sls_order_dt>sls_due_dt
+
+-- Checking for invalid sales
+select * from silver.crm_sales_details
+where sls_sales<=0 or sls_sales is null or sls_sales!=sls_quantity*sls_price;
+
+select * from silver.crm_sales_details
+where sls_quantity<=0 or sls_quantity is null or sls_quantity!=sls_sales/sls_price;
+
+select * from silver.crm_sales_details
+where sls_price<=0 or sls_price is null or sls_price!=sls_sales/sls_quantity;
+
+
+select * from silver.crm_sales_details;
+-- ===========================================================================================
+
+
+
+
+-- ============================================================================
+-- erp_cust_az12
+-- ============================================================================
+-- Bronze Layer
+-- ============
+
+select 
+		case 
+			when cid like 'NAS%' then SUBSTRING(cid,4,length(cid))
+			else cid
+		end as cid,
+		case 
+			when bdate>now() then null
+			else bdate
+		end as bdate,
+		case 
+			when trim(gen)='M' or trim(gen)='Male' then 'Male'
+			when trim(gen)='F' or trim(gen)='Female' then 'Female'
+			else 'n/a'
+		end as gen
+from bronze.erp_cust_az12;
+
+-- Strandadize and Normalize 
+select distinct gen,
+	case 
+			when upper(trim(gen)) in ('M','MALE') then 'Male'
+			when upper(trim(gen)) IN ('F','FEMALE') then 'Female'
+			else 'n/a'
+	end as gen
+from bronze.erp_cust_az12;
+
+-- Checking invalid dates
+select bdate,
+	case 
+			when bdate>now() then null
+			else bdate
+		end as bdate
+from bronze.erp_cust_az12
+where bdate>now() or bdate <'1923-01-01';
+
+
+select * from bronze.erp_cust_az12 ;
+
+-- ===========================================================================================
+-- ===========================================================================================
+-- Silver Layer
+-- ============
+
+-- Checking the cid is present in refrenced table
+select cid
+from silver.erp_cust_az12
+where cid not in (select cst_key from silver.crm_cust_info);
+
+-- Checking invalid dates
+select *
+from silver.erp_cust_az12
+where bdate>now() or bdate <'1923-01-01';
+
+-- Strandadize and Normalize 
+select distinct gen
+from silver.erp_cust_az12;
+
+
+select * from silver.erp_cust_az12
+
+-- ===========================================================================================
+
+
+
+
+-- ===========================================================================================
+-- erp_loc_a101
+-- ===========================================================================================
+
+select 
+	replace(cid,'-','') as cid, 
+	cntry
+from bronze.erp_loc_a101;
+
+
+-- Data normalize and strandadize
+select 
+	distinct cntry,
+	case
+		when trim(cntry) in ('US', 'USA') then 'United States'
+		when trim(cntry)='DE' then 'Germany'
+		when trim(cntry) is null or trim(cntry)='' then 'n/a'
+		else trim(cntry)
+	end as cntry
+from bronze.erp_loc_a101;
+
+select * from bronze.erp_loc_a101 ;
+select * from silver.erp_loc_a101 ;
+-- ===========================================================================================
+
+
+
+
+-- ===========================================================================================
+-- erp_px_cat_g1v2
+-- ===========================================================================================
+
+-- finding duplicates in id
+select id
+from bronze.erp_px_cat_g1v2
+group by id
+having count(*)>1;
+
+-- check for unwanted spaces
+select *
+from bronze.erp_px_cat_g1v2
+where cat!=trim(cat) or subcat!=trim(subcat) or maintenance!=trim(maintenance)
+
+-- Data Strandardization and Normalization
+select distinct maintenance
+from bronze.erp_px_cat_g1v2;
+
+
+select * from bronze.erp_px_cat_g1v2;
+select * from silver.erp_px_cat_g1v2;
+-- ===========================================================================================
