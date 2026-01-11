@@ -1,3 +1,36 @@
+/*
+===========================================================================================
+Script Name      : ddl_silver.sql
+Layer            : Silver
+Purpose          : DDL Creation for Silver Layer Tables
+===========================================================================================
+
+Script Purpose:
+    This script is responsible for creating all required tables in the 'silver' schema.
+    These tables store cleaned, standardized, and structured data derived from the
+    'bronze' layer as part of the data warehousing pipeline.
+
+Actions Performed:
+    - Creates Silver layer tables.
+    - Defines appropriate data types and column structures.
+    - Prepares tables for downstream ETL loading processes.
+
+Dependencies:
+    - Requires the 'silver' schema to exist.
+    - Source data is expected to come from the 'bronze' schema.
+
+Parameters:
+    None.
+
+Notes:
+    - This script should be executed before running any Silver layer data load procedures.
+    - Designed to be idempotent where applicable (use DROP/CREATE or CREATE IF NOT EXISTS
+      based on implementation).
+
+===========================================================================================
+*/
+
+
 DROP TABLE IF EXISTS silver.crm_cust_info;
 CREATE TABLE silver.crm_cust_info(
 	cst_id int,
