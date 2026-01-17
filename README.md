@@ -78,3 +78,4 @@ It is designed using a **Star Schema** to support analytical queries, reporting,
 - Fact table references dimensions via foreign keys
 - Optimized for aggregation, filtering, and slicing across business dimensions
 
+## 📂 Repository Structure
