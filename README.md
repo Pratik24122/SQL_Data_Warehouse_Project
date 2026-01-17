@@ -1,6 +1,5 @@
 # SQL_Data_Warehouse_Project
 
-
 ## 📌 Project Overview
 
 This project implements an **end-to-end SQL Data Warehouse** using a **Medallion Architecture (Bronze, Silver, Gold)**.  
@@ -81,6 +80,7 @@ It is designed using a **Star Schema** to support analytical queries, reporting,
 - Optimized for aggregation, filtering, and slicing across business dimensions
 
 ---
+
 ## 📋 Project Requirements
 
 ### Functional Requirements
@@ -117,4 +117,6 @@ It is designed using a **Star Schema** to support analytical queries, reporting,
 - Suitable for analytics, BI tools, and ad-hoc SQL queries
 
 ---
+
 ## 📂 Repository Structure
+
