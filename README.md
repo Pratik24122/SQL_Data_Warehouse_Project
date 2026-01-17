@@ -78,4 +78,55 @@ It is designed using a **Star Schema** to support analytical queries, reporting,
 - Fact table references dimensions via foreign keys
 - Optimized for aggregation, filtering, and slicing across business dimensions
 
+## 📌 Project Overview
+
+This project implements an **end-to-end SQL Data Warehouse** using a **Medallion Architecture (Bronze, Silver, Gold)**.  
+It ingests data from **CRM and ERP source systems**, performs structured transformations, and exposes a **business-ready dimensional data model** for analytics and reporting.
+
+The project demonstrates how raw operational data can be transformed into a clean, integrated, and query-optimized warehouse using **pure SQL**, following **data engineering and dimensional modeling best practices**.
+
+Key highlights:
+- Layered data warehouse design (Bronze, Silver, Gold)
+- Integration of multiple source systems
+- SQL-based data cleansing and transformation
+- Dimensional modeling using a Star Schema
+- Data quality and integrity validation
+
+
+## 📋 Project Requirements
+
+### Functional Requirements
+- Ingest raw data from CRM and ERP source systems
+- Preserve raw data without modification in the Bronze layer
+- Clean, standardize, and integrate data in the Silver layer
+- Build a business-ready Gold layer using a dimensional (Star Schema) model
+- Generate surrogate keys for dimension tables
+- Maintain referential integrity between fact and dimension tables
+- Enable analytical and reporting queries on the Gold layer
+
+### Data Requirements
+- Support CSV-based source data ingestion
+- Handle customer, product, and sales transaction data
+- Enrich customer and product data using ERP sources
+- Ensure consistency of keys across systems
+
+### Data Quality Requirements
+- No duplicate surrogate keys in dimension tables
+- No orphan records in the fact table
+- Valid and standardized attribute values
+- Repeatable validation checks at Silver and Gold layers
+
+### Technical Requirements
+- SQL-based implementation (PostgreSQL / SQL Server compatible)
+- Clear separation of Bronze, Silver, and Gold layers
+- Script-based execution (no manual transformations)
+- Version-controlled code using Git and GitHub
+
+### Non-Functional Requirements
+- Readable, maintainable SQL scripts
+- Idempotent and re-runnable transformations
+- Clear documentation and project structure
+- Suitable for analytics, BI tools, and ad-hoc SQL queries
+
+
 ## 📂 Repository Structure
