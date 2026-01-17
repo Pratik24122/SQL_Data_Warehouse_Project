@@ -119,4 +119,32 @@ It is designed using a **Star Schema** to support analytical queries, reporting,
 ---
 
 ## 📂 Repository Structure
-
+SQL_Data_Warehouse_Project/
+│
+├── datasets/
+│ ├── source_crm/
+│ │ ├── cust_info.csv
+│ │ ├── prd_info.csv
+│ │ └── sales_details.csv
+│ │
+│ ├── source_erp/
+│ │ ├── CUST_AZ12.csv
+│ │ ├── LOC_A101.csv
+│ │ └── PX_CAT_G1V2.csv
+│
+├── scripts/
+│ ├── ddl_bronze.sql
+│ ├── bronze_load.sql
+│ ├── ddl_silver.sql
+│ ├── silver_data_filling_checks.sql
+│ └── gold_layer.sql
+│
+├── docs/
+│ ├── Data_Architecture.png
+│ ├── Data_Flow_Diagram.png
+│ ├── Data_Integration.png
+│ └── Data_Model.png
+│
+├── tests/
+├── README.md
+└── LICENSE
