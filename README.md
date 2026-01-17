@@ -1,6 +1,5 @@
 # SQL_Data_Warehouse_Project
 
-# SQL Data Warehouse Project
 
 ## 📌 Project Overview
 
@@ -20,7 +19,7 @@ The project focuses on:
 
 The overall data architecture follows a layered approach where raw source data is progressively refined into business-ready datasets.
 
-![Data Architecture](docs/data_architecture.png)
+![Data Architecture](docs/Data_Architecture.png)
 
 **Key Characteristics**
 - **Bronze Layer**: Raw, as-is data ingestion
@@ -34,7 +33,7 @@ The overall data architecture follows a layered approach where raw source data i
 
 The diagram below shows how data flows from **CRM and ERP sources** through Bronze, Silver, and Gold layers.
 
-![Data Flow Diagram](docs/data_flow_diagram.png)
+![Data Flow Diagram](docs/Data_Flow_Diagram.png)
 
 **Flow Summary**
 - Source CSV files land in the Bronze layer
@@ -47,7 +46,7 @@ The diagram below shows how data flows from **CRM and ERP sources** through Bron
 
 This diagram illustrates how **CRM and ERP tables are connected** and enriched during transformation.
 
-![Data Integration](docs/data_integration.png)
+![Data Integration](docs/Data_Integration.png)
 
 **Integration Highlights**
 - CRM provides transactional and master data
@@ -56,25 +55,26 @@ This diagram illustrates how **CRM and ERP tables are connected** and enriched d
 
 ---
 
-## ⭐ Sales Data Mart (Star Schema)
+## ⭐ Gold Layer – Dimensional Data Model (Star Schema)
 
-The final Gold layer is modeled as a **Sales Data Mart** using a Star Schema.
+The Gold layer represents the **final, business-ready dimensional data model** of the data warehouse.  
+It is designed using a **Star Schema** to support analytical queries, reporting, and BI consumption.
 
-![Sales Data Mart](docs/sales_data_mart.png)
+![Gold Layer Data Model](docs/Data_Model.png)
 
 ### Fact Table
-- `gold.fact_sales`
+- `gold.fact_sales`  
+  Stores transactional sales measures such as quantity, price, and sales amount.
 
 ### Dimension Tables
-- `gold.dim_customers`
-- `gold.dim_products`
+- `gold.dim_customers`  
+  Contains enriched customer attributes including demographics and location.
+  
+- `gold.dim_products`  
+  Contains product, category, and pricing information.
 
-**Design Notes**
-- Surrogate keys for dimensions
+**Design Characteristics**
+- Surrogate keys are used for all dimensions
 - Fact table references dimensions via foreign keys
-- Optimized for reporting and aggregation
-
----
-
-## 📂 Repository Structure
+- Optimized for aggregation, filtering, and slicing across business dimensions
 
