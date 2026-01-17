@@ -116,5 +116,5 @@ It is designed using a **Star Schema** to support analytical queries, reporting,
 - Clear documentation and project structure
 - Suitable for analytics, BI tools, and ad-hoc SQL queries
 
-
+---
 ## 📂 Repository Structure
