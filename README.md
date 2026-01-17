@@ -3,15 +3,17 @@
 
 ## 📌 Project Overview
 
-This project demonstrates an **end-to-end SQL Data Warehouse implementation** using the **Medallion Architecture (Bronze, Silver, Gold)**.  
-It integrates data from **CRM and ERP source systems**, applies structured transformations, and delivers **analytics-ready datasets** modeled using a **Star Schema**.
+This project implements an **end-to-end SQL Data Warehouse** using a **Medallion Architecture (Bronze, Silver, Gold)**.  
+It ingests data from **CRM and ERP source systems**, performs structured transformations, and exposes a **business-ready dimensional data model** for analytics and reporting.
 
-The project focuses on:
-- SQL-based ETL design
-- Layered data architecture
-- Dimensional modeling (Kimball methodology)
-- Data quality validation
-- Analytics and BI readiness
+The project demonstrates how raw operational data can be transformed into a clean, integrated, and query-optimized warehouse using **pure SQL**, following **data engineering and dimensional modeling best practices**.
+
+Key highlights:
+- Layered data warehouse design (Bronze, Silver, Gold)
+- Integration of multiple source systems
+- SQL-based data cleansing and transformation
+- Dimensional modeling using a Star Schema
+- Data quality and integrity validation
 
 ---
 
@@ -77,20 +79,6 @@ It is designed using a **Star Schema** to support analytical queries, reporting,
 - Surrogate keys are used for all dimensions
 - Fact table references dimensions via foreign keys
 - Optimized for aggregation, filtering, and slicing across business dimensions
-
-## 📌 Project Overview
-
-This project implements an **end-to-end SQL Data Warehouse** using a **Medallion Architecture (Bronze, Silver, Gold)**.  
-It ingests data from **CRM and ERP source systems**, performs structured transformations, and exposes a **business-ready dimensional data model** for analytics and reporting.
-
-The project demonstrates how raw operational data can be transformed into a clean, integrated, and query-optimized warehouse using **pure SQL**, following **data engineering and dimensional modeling best practices**.
-
-Key highlights:
-- Layered data warehouse design (Bronze, Silver, Gold)
-- Integration of multiple source systems
-- SQL-based data cleansing and transformation
-- Dimensional modeling using a Star Schema
-- Data quality and integrity validation
 
 
 ## 📋 Project Requirements
